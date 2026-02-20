@@ -20,20 +20,20 @@ public class BurgerTest {
 
     private int indexOld;
     private int indexNew;
-    private int indexAfterMove0;
-    private int indexAfterMove1;
-    private int indexAfterMove2;
+    private int firstElementAfterMove;
+    private int secondElementAfterMove;
+    private int thirdElementAfterMove;
 
-    public BurgerTest (int indexOld, int indexNew, int indexAfterMove0, int indexAfterMove1, int indexAfterMove2) {
+    public BurgerTest (int indexOld, int indexNew, int firstElementAfterMove, int secondElementAfterMove, int thirdElementAfterMove) {
         this.indexOld = indexOld;
         this.indexNew = indexNew;
-        this.indexAfterMove0 = indexAfterMove0;
-        this.indexAfterMove1 = indexAfterMove1;
-        this.indexAfterMove2 = indexAfterMove2;
+        this.firstElementAfterMove = firstElementAfterMove;
+        this.secondElementAfterMove = secondElementAfterMove;
+        this.thirdElementAfterMove = thirdElementAfterMove;
 
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Индексы: старый: {0}, новый :{1}; Новый порядок в списке: {2},{3},{4}")
     public static Object[][] testData() {
         return new Object[][]{
                 {0, 2, 1, 2, 0},
@@ -77,44 +77,44 @@ public class BurgerTest {
     @Test
     @Description("Проверка удаления ингредиентов из бургера")
     public void removeIngredientShouldDeleteIngredientFromBurgerTest() {
-        Ingredient ingredient0 = mock(Ingredient.class);
-        Ingredient ingredient1 = mock(Ingredient.class);
+        Ingredient firstIngredient = mock(Ingredient.class);
+        Ingredient secondIngredient = mock(Ingredient.class);
 
-        burger.addIngredient(ingredient0);
-        burger.addIngredient(ingredient1);
+        burger.addIngredient(firstIngredient);
+        burger.addIngredient(secondIngredient);
         burger.removeIngredient(0);
-        assertEquals("В списке ингредиентов должен был остаться " + ingredient1.getName() +
+        assertEquals("В списке ингредиентов должен был остаться " + secondIngredient.getName() +
                         " вместо " + burger.ingredients.get(0).getName(),
-                ingredient1, burger.ingredients.get(0));
+                secondIngredient, burger.ingredients.get(0));
     }
 
     @Test
     @Description("Проверка изменения порядка ингредиентов в бургере")
     public void moveIngredientShouldMoveIngredientsInBurgerTest() {
-        Ingredient ingredient0 = mock(Ingredient.class);
-        Ingredient ingredient1 = mock(Ingredient.class);
-        Ingredient ingredient2 = mock(Ingredient.class);
+        Ingredient firstIngredient = mock(Ingredient.class);
+        Ingredient secondIngredient = mock(Ingredient.class);
+        Ingredient thirdIngredient = mock(Ingredient.class);
 
-        when(ingredient0.getName()).thenReturn("kepchuk");
-        when(ingredient1.getName()).thenReturn("kotleta");
-        when(ingredient2.getName()).thenReturn("mazik");
+        when(firstIngredient.getName()).thenReturn("kepchuk");
+        when(secondIngredient.getName()).thenReturn("kotleta");
+        when(thirdIngredient.getName()).thenReturn("mazik");
 
-        List<Ingredient> expectedList = Arrays.asList(ingredient0, ingredient1, ingredient2);
+        List<Ingredient> expectedList = Arrays.asList(firstIngredient, secondIngredient, thirdIngredient);
 
-        burger.addIngredient(ingredient0);
-        burger.addIngredient(ingredient1);
-        burger.addIngredient(ingredient2);
+        burger.addIngredient(firstIngredient);
+        burger.addIngredient(secondIngredient);
+        burger.addIngredient(thirdIngredient);
 
         burger.moveIngredient(indexOld, indexNew);
-        assertEquals("Ожидался порядок: " + expectedList.get(indexAfterMove0).getName() + ", " +
-                        expectedList.get(indexAfterMove1).getName() + ", " +
-                        expectedList.get(indexAfterMove2).getName() +
+        assertEquals("Ожидался порядок: " + expectedList.get(firstElementAfterMove).getName() + ", " +
+                        expectedList.get(secondElementAfterMove).getName() + ", " +
+                        expectedList.get(thirdElementAfterMove).getName() +
                         " фактический порядок " + burger.ingredients.get(0).getName() + ", " +
                         burger.ingredients.get(1).getName() + ", " +
                         burger.ingredients.get(2).getName() + ", ",
-                Arrays.asList(expectedList.get(indexAfterMove0).getName(),
-                        expectedList.get(indexAfterMove1).getName(),
-                        expectedList.get(indexAfterMove2).getName()),
+                Arrays.asList(expectedList.get(firstElementAfterMove).getName(),
+                        expectedList.get(secondElementAfterMove).getName(),
+                        expectedList.get(thirdElementAfterMove).getName()),
                 Arrays.asList(burger.ingredients.get(0).getName(),
                         burger.ingredients.get(1).getName(),
                         burger.ingredients.get(2).getName()));
@@ -126,16 +126,16 @@ public class BurgerTest {
         Bun bun =  Mockito.mock(Bun.class);
         when(bun.getPrice()).thenReturn(150f);
 
-        Ingredient ingredient0 = mock(Ingredient.class);
-        Ingredient ingredient1 = mock(Ingredient.class);
+        Ingredient firstIngredient = mock(Ingredient.class);
+        Ingredient secondIngredient = mock(Ingredient.class);
 
-        when(ingredient0.getPrice()).thenReturn(50f);
+        when(firstIngredient.getPrice()).thenReturn(50f);
 
-        when(ingredient1.getPrice()).thenReturn(250f);
+        when(secondIngredient.getPrice()).thenReturn(250f);
 
         burger.setBuns(bun);
-        burger.addIngredient(ingredient0);
-        burger.addIngredient(ingredient1);
+        burger.addIngredient(firstIngredient);
+        burger.addIngredient(secondIngredient);
 
         float expectedPrice = 150f * 2 + 50f + 250f;
         float actualPrice = burger.getPrice();
@@ -149,21 +149,21 @@ public class BurgerTest {
         when(bun.getName()).thenReturn("S oregano");
         when(bun.getPrice()).thenReturn(100f);
 
-        Ingredient ingredient0 = mock(Ingredient.class);
-        Ingredient ingredient1 = mock(Ingredient.class);
+        Ingredient firstIngredient = mock(Ingredient.class);
+        Ingredient secondIngredient = mock(Ingredient.class);
 
-        when(ingredient0.getName()).thenReturn("1000 ostrovov");
-        when(ingredient0.getPrice()).thenReturn(100f);
-        when(ingredient0.getType()).thenReturn(IngredientType.SAUCE);
+        when(firstIngredient.getName()).thenReturn("1000 ostrovov");
+        when(firstIngredient.getPrice()).thenReturn(100f);
+        when(firstIngredient.getType()).thenReturn(IngredientType.SAUCE);
 
 
-        when(ingredient1.getName()).thenReturn("indeyka");
-        when(ingredient1.getPrice()).thenReturn(200f);
-        when(ingredient1.getType()).thenReturn(IngredientType.FILLING);
+        when(secondIngredient.getName()).thenReturn("indeyka");
+        when(secondIngredient.getPrice()).thenReturn(200f);
+        when(secondIngredient.getType()).thenReturn(IngredientType.FILLING);
 
         burger.setBuns(bun);
-        burger.addIngredient(ingredient0);
-        burger.addIngredient(ingredient1);
+        burger.addIngredient(firstIngredient);
+        burger.addIngredient(secondIngredient);
 
         String expectedReceipt = "(==== S oregano ====)\n" +
                                  "= sauce 1000 ostrovov =\n" +
